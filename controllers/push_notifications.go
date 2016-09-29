@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/kataras/iris"
 	"github.com/itsbalamurali/parse-server/database"
+	"github.com/tbalthazar/onesignal-go"
 )
 
 type Push struct {
@@ -39,6 +40,10 @@ func (c *PushAPI) Create(ctx *iris.Context) {
 
 	Db := database.MgoDb{}
 	Db.Init()
+
+	client := onesignal.NewClient(nil)
+	client.AppKey = "YourOneSignalAppKey"
+
 
 	Db.Close()
 }
