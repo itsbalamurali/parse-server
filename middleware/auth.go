@@ -11,9 +11,22 @@ const (
 
 func APIAuth(ctx *iris.Context){
 	masterkey := ctx.RequestHeader(MasterKey)
-	if masterkey != "" {
+	restkey := ctx.RequestHeader(RestAPIKey)
+	jskey := ctx.RequestHeader(JSKey)
+
+	if masterkey != "" || restkey != "" || jskey != "" {
+
 		ctx.Next()
 	}else {
 		ctx.JSON(403,iris.Map{"error":"unauthorized"})
 	}
+}
+
+
+func AppAuth(ctx *iris.Context)  {
+	appid := ctx.RequestHeader(AppID)
+	if appid != "" {
+
+	}
+	ctx.Next()
 }

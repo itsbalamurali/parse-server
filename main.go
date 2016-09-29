@@ -109,6 +109,7 @@ func main() {
 	//Analytics
 	event := new(controllers.EventAPI)
 	v1.Post("/events/AppOpened",event.AppOpened)
+	v1.Get("/events/:eventName",event.GetAllEvents)
 	v1.Post("/events/:eventName",event.CustomEvent)
 
 	//Push Notifications
