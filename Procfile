@@ -1,0 +1,1 @@
+web: parse-server
