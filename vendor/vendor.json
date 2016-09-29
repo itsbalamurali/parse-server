@@ -177,6 +177,24 @@
 			"revisionTime": "2016-07-12T21:00:15Z"
 		},
 		{
+			"checksumSHA1": "Qs1LtioSQpZjHJ8M8HlZe/mDe80=",
+			"path": "github.com/iris-contrib/middleware/cors",
+			"revision": "0c73f60b2915b59330ad584415ea6e561d488ae4",
+			"revisionTime": "2016-09-27T14:44:06Z"
+		},
+		{
+			"checksumSHA1": "RgCoekFv6JqCplQVRLj1hxWdnqo=",
+			"path": "github.com/iris-contrib/middleware/logger",
+			"revision": "0c73f60b2915b59330ad584415ea6e561d488ae4",
+			"revisionTime": "2016-09-27T14:44:06Z"
+		},
+		{
+			"checksumSHA1": "EUcgIzaIuGzGOeyIb6BVmlhbN40=",
+			"path": "github.com/iris-contrib/middleware/recovery",
+			"revision": "0c73f60b2915b59330ad584415ea6e561d488ae4",
+			"revisionTime": "2016-09-27T14:44:06Z"
+		},
+		{
 			"checksumSHA1": "pFY8Is/71O8c54PvO5Mw/ID1SfA=",
 			"path": "github.com/iris-contrib/websocket",
 			"revision": "5822d5825abd388d92ecdf42024dc2ad1a5ce1ba",
@@ -493,6 +511,12 @@
 			"path": "github.com/stretchr/testify/require",
 			"revision": "976c720a22c8eb4eb6a0b4348ad85ad12491a506",
 			"revisionTime": "2016-09-25T22:06:09Z"
+		},
+		{
+			"checksumSHA1": "QGT0FPVApx+we1jplEIhrg02kEQ=",
+			"path": "github.com/tbalthazar/onesignal-go",
+			"revision": "312530be66c85e2271bd745a7cbb54b620ab119e",
+			"revisionTime": "2016-09-28T06:47:23Z"
 		},
 		{
 			"checksumSHA1": "LTOa3BADhwvT0wFCknPueQALm8I=",

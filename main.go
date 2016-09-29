@@ -9,13 +9,15 @@ package main
 
 import (
 	"github.com/kataras/iris"
-	//"github.com/iris-contrib/middleware/logger"
-	//"github.com/iris-contrib/middleware/recovery"
+	"github.com/iris-contrib/middleware/recovery"
 	"github.com/itsbalamurali/parse-server/database"
 	"github.com/itsbalamurali/parse-server/controllers"
 	"github.com/itsbalamurali/parse-server/config"
 	"os"
-	"github.com/spf13/viper"
+	"github.com/itsbalamurali/parse-server/middleware"
+	"github.com/itsbalamurali/parse-server/models"
+	"github.com/iris-contrib/middleware/cors"
+	"github.com/iris-contrib/middleware/logger"
 )
 
 func main() {
@@ -25,17 +27,43 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	// set the global middlewares
-	//api.Use(logger.New())
-	//api.Use(recovery.Handler)
+
+	//Enable Cors
+	crs := cors.New(cors.Options{
+		AllowedHeaders: []string{"X-Parse-Master-Key",
+			"X-Parse-REST-API-Key",
+			"X-Parse-Javascript-Key",
+			"X-Parse-Application-Id",
+			"X-Parse-Client-Version",
+			"X-Parse-Session-Token",
+			"X-Requested-With",
+			"X-Parse-Revocable-Session",
+			"Content-Type"},
+		AllowedMethods:[]string{"GET","PUT","POST","DELETE","OPTIONS"},
+		AllowedOrigins: []string{"*"},
+	}) // options here
+	//set global middlewares
+	api.Use(logger.New())
+	api.Use(recovery.Handler)
+	api.Use(crs)
+	api.UseFunc(middleware.APIAuth)
 
 	//Main Database Connection
 	Db := database.MgoDb{}
 	Db.Init()
 
+	//Custom HTTP Errors
+	api.OnError(iris.StatusNotFound, func(ctx *iris.Context) {
+		ctx.JSON(iris.StatusNotFound,models.Error{Code:iris.StatusNotFound,Message:"Resource Not Found"})
+		iris.Logger.Printf("http status: 404 happened!")
+	})
+
 
 	//API Version 1
 	v1 := iris.Party("/1")
+	v1.Get("/",func(ctx *iris.Context) {
+		ctx.WriteString("Apple Fuck!")
+	})
 
 	//V1 Routes
 	//Classes
@@ -136,13 +164,15 @@ func main() {
 	v1.Put("/hooks/triggers/:funcName/:triggerName",hookfuncs.Update)
 	v1.Delete("/hooks/triggers/:funcName/:triggerName",hookfuncs.Delete)
 
-	enableSwagger := viper.GetBool("config.enable_swagger_ui")
+	enableSwagger := true //TODO Get from viper
 	if enableSwagger {
 		//Serve Swagger UI
-		api.StaticWeb("/swagger","./public",0)
+		api.StaticWeb("/swagger-ui","./public",0)
 		//Serves Swagger JSON API Spec
 		v1.Get("/swagger.json",controllers.SwaggerJSON)
+		iris.Logger.Printf("You Access Swagger-UI at: http://0.0.0.0:"+port+"/swagger-ui")
 	}
+
 
 	//Listen on port specified
 	api.Listen(":"+port)
