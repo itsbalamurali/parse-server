@@ -1,0 +1,14 @@
+# Server config file.
+[config]
+database_uri: ""
+cloud_code: ""
+master_key: "apple"
+server_url: ""
+enable_swagger_ui: true
+#Push notifications config
+[config.push]
+onesignal_userkey: ""
+#Email Config
+[config.mail]
+#SMS/OTP Config
+[config.mail]
