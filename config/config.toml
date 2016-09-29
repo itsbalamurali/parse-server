@@ -10,4 +10,4 @@ server_url = ""
     [config.mail]
     #SMS/OTP Config
     [config.mail]
-
+enable_swagger_ui = true
