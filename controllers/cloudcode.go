@@ -5,7 +5,7 @@ import (
 	"github.com/itsbalamurali/parse-server/database"
 )
 
-type FileAPI struct {
+type FunctionAPI struct {
 	*iris.Context
 }
 
@@ -21,7 +21,7 @@ type FileAPI struct {
 // @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
 // @Resource /order
 // @Router /orders/by-customer/{customer_id} [get]
-func (c *FileAPI) Upload(ctx *iris.Context) {
+func (c *FunctionAPI) ExecuteFunc(ctx *iris.Context) {
 
 	Db := database.MgoDb{}
 	Db.Init()
@@ -41,7 +41,7 @@ func (c *FileAPI) Upload(ctx *iris.Context) {
 // @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
 // @Resource /order
 // @Router /orders/by-customer/{customer_id} [get]
-func (c *FileAPI) Delete(ctx *iris.Context) {
+func (c *FunctionAPI) TriggerJob(ctx *iris.Context) {
 
 	Db := database.MgoDb{}
 	Db.Init()

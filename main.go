@@ -15,6 +15,7 @@ import (
 	"github.com/itsbalamurali/parse-server/controllers"
 	"github.com/itsbalamurali/parse-server/config"
 	"os"
+	"github.com/spf13/viper"
 )
 
 func main() {
@@ -37,8 +38,6 @@ func main() {
 	v1 := iris.Party("/1")
 
 	//V1 Routes
-	v1.Get("/swagger.json",controllers.SwaggerJSON) //Serves Swagger JSON API Spec
-
 	//Classes
 	class := new(controllers.ClassAPI)
 	v1.Post("/classes/:className", class.Create)
@@ -119,9 +118,9 @@ func main() {
 	v1.Get("/apps",apps.Get)
 
 	//Config
-	config := new(controllers.ConfigAPI)
-	v1.Get("/config",config.Get)
-	v1.Put("/config",config.Update)
+	conf := new(controllers.ConfigAPI)
+	v1.Get("/config",conf.Get)
+	v1.Put("/config",conf.Update)
 
 	//Function Hooks
 	hookfuncs := new(controllers.HFuncsAPI)
@@ -137,8 +136,14 @@ func main() {
 	v1.Put("/hooks/triggers/:funcName/:triggerName",hookfuncs.Update)
 	v1.Delete("/hooks/triggers/:funcName/:triggerName",hookfuncs.Delete)
 
+	enableSwagger := viper.GetBool("config.enable_swagger_ui")
+	if enableSwagger {
+		//Serve Swagger UI
+		api.StaticWeb("/swagger","./public",0)
+		//Serves Swagger JSON API Spec
+		v1.Get("/swagger.json",controllers.SwaggerJSON)
+	}
 
-	//Serve Swagger UI
-	api.StaticWeb("/swagger","./public",0)
+	//Listen on port specified
 	api.Listen(":"+port)
 }
