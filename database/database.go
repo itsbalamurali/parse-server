@@ -3,8 +3,8 @@ package database
 import "gopkg.in/mgo.v2"
 
 var (
-	Host         = "mongodb://localhost:27017"
-	Database     = "iris"
+	Host         = "mongodb://ds021346.mlab.com:21346/"
+	Database     = "paper"
 	AuthDatabase = "authdb"
 	AuthUserName = "root"
 	AuthPassword = "pass"
@@ -32,9 +32,12 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
+		//defer mainSession.Close() //Extra add
+
 
 		mainSession.SetMode(mgo.Monotonic, true)
 		mainDb = mainSession.DB(Database)
+		mainDb.Login("parse","parse")
 
 	}
 

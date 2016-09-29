@@ -1,0 +1,13 @@
+# Server config file.
+[config]
+database_uri = ""
+cloud_code = ""
+master_key = ""
+server_url = ""
+    #Push notifications config
+    [config.push]
+    #Email Config
+    [config.mail]
+    #SMS/OTP Config
+    [config.mail]
+
