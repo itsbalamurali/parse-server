@@ -2,8 +2,8 @@
 // @APITitle Parse Server
 // @APIDescription Parse Mobile Backend API.
 // @Contact balamurali@live.com
-// @License BSD
-// @LicenseUrl http://opensource.org/licenses/BSD-2-Clause
+// @License
+// @LicenseUrl
 // @BasePath http://0.0.0.0:8080/1/
 package main
 
@@ -22,7 +22,6 @@ import (
 
 func main() {
 	config.InitConfig()
-	api := iris.New()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -43,27 +42,26 @@ func main() {
 		AllowedOrigins: []string{"*"},
 	}) // options here
 	//set global middlewares
-	api.Use(logger.New())
-	api.Use(recovery.Handler)
-	api.Use(crs)
-	api.UseFunc(middleware.APIAuth)
+	iris.Use(logger.New())
+	iris.Use(recovery.Handler)
+	iris.Use(crs)
+	iris.UseFunc(middleware.APIAuth)
 
 	//Main Database Connection
 	Db := database.MgoDb{}
 	Db.Init()
 
+
 	//Custom HTTP Errors
-	api.OnError(iris.StatusNotFound, func(ctx *iris.Context) {
+	iris.OnError(iris.StatusNotFound, func(ctx *iris.Context) {
 		ctx.JSON(iris.StatusNotFound,models.Error{Code:iris.StatusNotFound,Message:"Resource Not Found"})
 		iris.Logger.Printf("http status: 404 happened!")
 	})
 
 
+
 	//API Version 1
 	v1 := iris.Party("/1")
-	v1.Get("/",func(ctx *iris.Context) {
-		ctx.WriteString("Apple Fuck!")
-	})
 
 	//V1 Routes
 	//Classes
@@ -105,8 +103,8 @@ func main() {
 
 	//Files
 	files := new(controllers.FileAPI)
-	v1.Post("/push",files.Upload)
-	v1.Delete("/push",files.Delete)
+	v1.Post("/files",files.Upload)
+	v1.Delete("/files/:name",files.Delete)
 
 	//Analytics
 	event := new(controllers.EventAPI)
@@ -167,13 +165,13 @@ func main() {
 	enableSwagger := true //TODO Get from viper
 	if enableSwagger {
 		//Serve Swagger UI
-		api.StaticWeb("/swagger-ui","./public",0)
+		iris.StaticWeb("/docs","./public",1)
 		//Serves Swagger JSON API Spec
 		v1.Get("/swagger.json",controllers.SwaggerJSON)
-		iris.Logger.Printf("You Access Swagger-UI at: http://0.0.0.0:"+port+"/swagger-ui")
+		iris.Logger.Printf("You Access Swagger-UI at: http://0.0.0.0:"+port+"/docs")
 	}
 
 
 	//Listen on port specified
-	api.Listen(":"+port)
+	iris.Listen(":"+port)
 }
