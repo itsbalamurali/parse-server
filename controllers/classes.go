@@ -3,44 +3,21 @@ package controllers
 import (
 	"github.com/kataras/iris"
 	"github.com/itsbalamurali/parse-server/database"
+	"encoding/json"
 )
 
 type ClassAPI struct {
 	*iris.Context
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
 func (c *ClassAPI) Get(ctx *iris.Context) {
-
+	//name := c.Param("name")
 	Db := database.MgoDb{}
 	Db.Init()
 
 	Db.Close()
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
 func (c *ClassAPI) GetAll(ctx *iris.Context) {
 
 	Db := database.MgoDb{}
@@ -49,39 +26,38 @@ func (c *ClassAPI) GetAll(ctx *iris.Context) {
 	Db.Close()
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
-func (c *ClassAPI) Create(ctx *iris.Context) {
 
+func (c ClassAPI) Create(ctx *iris.Context) {
+	var i interface{}
+	classname := ctx.Param("className")
+	b := ctx.Request.Body()
+	if err := json.Unmarshal(b, &i); err != nil {
+		panic(err.Error())
+	}
 	Db := database.MgoDb{}
 	Db.Init()
+	// Insert
+	if err := Db.C(classname).Insert(&i) ; err != nil {
+		// Is a duplicate key, but we don't know which one
+		//ctx.JSON(iris.StatusOK, models.Err("5"))
+		if Db.IsDup(err) {
+			//ctx.JSON(iris.StatusOK, models.Err("6"))
+		}
+	} else {
+		ctx.JSON(iris.StatusOK, iris.Map{"response": true})
+	}
 
 	Db.Close()
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
+
 func (c *ClassAPI) Update(ctx *iris.Context) {
+	var i interface{}
+	classname := ctx.Param("className")
+	b := ctx.Request.Body()
+	if err := json.Unmarshal(b, &i); err != nil {
+		panic(err.Error())
+	}
 
 	Db := database.MgoDb{}
 	Db.Init()
@@ -89,21 +65,11 @@ func (c *ClassAPI) Update(ctx *iris.Context) {
 	Db.Close()
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
 func (c *ClassAPI) Delete(ctx *iris.Context)  {
 
 	Db := database.MgoDb{}
 	Db.Init()
+
+
 	Db.Close()
 }
