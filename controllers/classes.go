@@ -10,7 +10,7 @@ type ClassAPI struct {
 	*iris.Context
 }
 
-func (c *ClassAPI) Get(ctx *iris.Context) {
+func (c ClassAPI) Get(ctx *iris.Context) {
 	//name := c.Param("name")
 	Db := database.MgoDb{}
 	Db.Init()
@@ -18,7 +18,7 @@ func (c *ClassAPI) Get(ctx *iris.Context) {
 	Db.Close()
 }
 
-func (c *ClassAPI) GetAll(ctx *iris.Context) {
+func (c ClassAPI) GetAll(ctx *iris.Context) {
 
 	Db := database.MgoDb{}
 	Db.Init()
@@ -51,7 +51,7 @@ func (c ClassAPI) Create(ctx *iris.Context) {
 }
 
 
-func (c *ClassAPI) Update(ctx *iris.Context) {
+func (c ClassAPI) Update(ctx *iris.Context) {
 	var i interface{}
 	//classname := ctx.Param("className")
 	b := ctx.Request.Body()
@@ -65,7 +65,7 @@ func (c *ClassAPI) Update(ctx *iris.Context) {
 	Db.Close()
 }
 
-func (c *ClassAPI) Delete(ctx *iris.Context)  {
+func (c ClassAPI) Delete(ctx *iris.Context)  {
 
 	Db := database.MgoDb{}
 	Db.Init()
