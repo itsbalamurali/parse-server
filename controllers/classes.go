@@ -53,7 +53,7 @@ func (c ClassAPI) Create(ctx *iris.Context) {
 
 func (c *ClassAPI) Update(ctx *iris.Context) {
 	var i interface{}
-	classname := ctx.Param("className")
+	//classname := ctx.Param("className")
 	b := ctx.Request.Body()
 	if err := json.Unmarshal(b, &i); err != nil {
 		panic(err.Error())
