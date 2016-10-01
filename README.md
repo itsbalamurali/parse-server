@@ -1,5 +1,5 @@
 # xParse : Parse Server Compatible Mobile Backend
-[![Build Status](https://travis-ci.org/itsbalamurali/parse-server.svg?branch=master)](https://travis-ci.org/itsbalamurali/parse-server) [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badge/) [![codecov](https://codecov.io/gh/itsbalamurali/parse-server/branch/master/graph/badge.svg)](https://codecov.io/gh/itsbalamurali/parse-server)
+[![Travis](https://img.shields.io/travis/itsbalamurali/parse-server.svg?maxAge=2592000)](https://travis-ci.org/itsbalamurali/parse-server) [![GitHub release](https://img.shields.io/github/release/itsbalamurali/parse-server.svg?maxAge=2592000)](https://github.com/itsbalamurali/parse-server) [![codecov](https://codecov.io/gh/itsbalamurali/parse-server/branch/master/graph/badge.svg)](https://codecov.io/gh/itsbalamurali/parse-server) [![license](https://img.shields.io/github/license/itsbalamurali/parse-server.svg?maxAge=2592000)](https://github.com/itsbalamurali/parse-server)
 
 
 ## WIP: Work in Progress
