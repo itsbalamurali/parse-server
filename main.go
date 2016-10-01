@@ -27,6 +27,10 @@ func main() {
 		port = "8080"
 	}
 
+	//iris.Config.Websocket.Endpoint = "/ws" parselive query
+	iris.Config.DisableBanner = true
+	iris.Config.LoggerPreffix = "xParse"
+
 	//Enable Cors
 	crs := cors.New(cors.Options{
 		AllowedHeaders: []string{"X-Parse-Master-Key",
@@ -162,6 +166,8 @@ func main() {
 	v1.Get("/hooks/triggers/:className/:triggerName",hookfuncs.GetByID)
 	v1.Put("/hooks/triggers/:funcName/:triggerName",hookfuncs.Update)
 	v1.Delete("/hooks/triggers/:funcName/:triggerName",hookfuncs.Delete)
+
+
 
 	enableSwagger := true //TODO Get from viper
 	if enableSwagger {
