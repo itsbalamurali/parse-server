@@ -1,3 +1,4 @@
 *.exe
 .idea/
 vendor/*/
+public/

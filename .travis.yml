@@ -9,6 +9,7 @@ script:
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -ko ./swaggerui.zip "https://github.com/swagger-api/swagger-ui/archive/v2.2.5.zip")
 
 install:
 before_deploy:
