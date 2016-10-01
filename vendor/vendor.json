@@ -51,6 +51,24 @@
 			"revisionTime": "2016-09-27T13:20:17Z"
 		},
 		{
+			"checksumSHA1": "9HwBlV3wDKzGlnFGO7wa5hAPe5U=",
+			"path": "github.com/goamz/goamz/aws",
+			"revision": "fb002ae75f50beb93874fa6ce2c861e488ce08a0",
+			"revisionTime": "2016-09-17T07:53:18Z"
+		},
+		{
+			"checksumSHA1": "MNbuTK/f1p2AzM1umds5E0fKS10=",
+			"path": "github.com/goamz/goamz/s3",
+			"revision": "fb002ae75f50beb93874fa6ce2c861e488ce08a0",
+			"revisionTime": "2016-09-17T07:53:18Z"
+		},
+		{
+			"checksumSHA1": "eRVkUEfR3b4256IaoxSrRbiID9I=",
+			"path": "github.com/goamz/goamz/s3/s3test",
+			"revision": "fb002ae75f50beb93874fa6ce2c861e488ce08a0",
+			"revisionTime": "2016-09-17T07:53:18Z"
+		},
+		{
 			"checksumSHA1": "lgk38ggoIH2I3nzcgerykYAf8pY=",
 			"path": "github.com/google/go-github/github",
 			"revision": "e4194fe26c3379788dc1671da379f719351f093e",
@@ -541,6 +559,12 @@
 			"path": "github.com/valyala/fasthttp/fasthttputil",
 			"revision": "b43280dfe8ade44056e0179593f8ab30f82a7f47",
 			"revisionTime": "2016-09-27T17:02:30Z"
+		},
+		{
+			"checksumSHA1": "sFD8LpJPQtWLwGda3edjf5mNUbs=",
+			"path": "github.com/vaughan0/go-ini",
+			"revision": "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1",
+			"revisionTime": "2013-09-23T14:52:12Z"
 		},
 		{
 			"checksumSHA1": "drSl/ipSHSsHWWTrp3WZw4LN/No=",

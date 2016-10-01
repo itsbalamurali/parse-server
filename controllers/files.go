@@ -1,50 +1,61 @@
 package controllers
 
 import (
+	"github.com/goamz/goamz/s3"
+	"github.com/itsbalamurali/parse-server/models"
 	"github.com/kataras/iris"
-	"github.com/itsbalamurali/parse-server/database"
+	"io/ioutil"
 )
 
 type FileAPI struct {
 	*iris.Context
+	bucket *s3.Bucket
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
-func (c *FileAPI) Upload(ctx *iris.Context) {
+/*
+InvalidFileName	122	An invalid filename was used for Parse File. A valid file name contains only a-zA-Z0-9_. characters and is between 1 and 128 characters.
+MissingContentType	126	Missing content type.
+MissingContentLength	127	Missing content length.
+InvalidContentLength	128	Invalid content length.
+FileTooLarge	129	File size exceeds maximum allowed.
+FileSaveError	130	Error saving a file.
+FileDeleteError	131	File could not be deleted.
+*/
 
-	Db := database.MgoDb{}
-	Db.Init()
+func (f *FileAPI) Upload(ctx *iris.Context) {
+	if ctx.PostBody() == nil {
+		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "InvalidContentLength", Code: 128})
+	}
 
-	Db.Close()
+	if ctx.Request.Header.ContentLength() == nil {
+		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "MissingContentLength", Code: 128})
+	}
+
+	if ctx.Request.Header.ContentType() == nil {
+		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "MissingContentType", Code: 128})
+	}
+
+	filename := ctx.Param("name")
+
+	content, err := ioutil.ReadAll(ctx.PostBody())
+
+	if err != nil {
+		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "FileSaveError", Code: 130})
+	}
+
+	err = f.bucket.Put(filename, content, ctx.Request.Header.ContentType(), s3.PublicRead)
+
+	if err != nil {
+		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "FileSaveError", Code: 130})
+	}
+
+	url := f.bucket.URL(filename)
+	ctx.Response.Header.Set("Location", url)
+	ctx.JSON(iris.StatusCreated, iris.Map{"url": url, "name": filename})
 }
 
-// @Title getOrdersByCustomer
-// @Description retrieves orders for given customer defined by customer ID
-// @Accept  json
-// @Param   customer_id     path    int     true        "Customer ID"
-// @Param   order_id        query   int     false        "Retrieve order with given ID only"
-// @Param   order_nr        query   string  false        "Retrieve order with given number only"
-// @Param   created_from    query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created starting from created_from"
-// @Param   created_to      query   string  false        "Date-time string, MySQL format. If specified, API will retrieve orders that were created before created_to"
-// @Success 200 {array}  my_api.model.OrderRow
-// @Failure 400 {object} my_api.ErrorResponse    "Customer ID must be specified"
-// @Resource /order
-// @Router /orders/by-customer/{customer_id} [get]
-func (c *FileAPI) Delete(ctx *iris.Context) {
-
-	Db := database.MgoDb{}
-	Db.Init()
-
-	Db.Close()
+func (f *FileAPI) Delete(ctx *iris.Context) {
+	filename := ctx.Param("name")
+	f.bucket.Del(filename)
+	ctx.Response.Header.StatusCode(204)
 }
