@@ -4,20 +4,9 @@ import (
 	"github.com/kataras/iris"
 	"github.com/itsbalamurali/parse-server/database"
 	"github.com/tbalthazar/onesignal-go"
+	"github.com/itsbalamurali/parse-server/models"
 )
 
-type Push struct {
-	Where	Where	`json:"where"`
-	Data	Data	`json:"data"`
-}
-
-type Where struct {
-	InstalationId	string	`json:"installationId"`
-}
-
-type Data struct {
-	Alert	string	`json:"alert"`
-}
 
 
 type PushAPI struct {
@@ -38,12 +27,13 @@ type PushAPI struct {
 // @Router /orders/by-customer/{customer_id} [get]
 func (c *PushAPI) Create(ctx *iris.Context) {
 
+	pushmsg := &models.Push{}
 	Db := database.MgoDb{}
 	Db.Init()
 
 	client := onesignal.NewClient(nil)
 	client.AppKey = "YourOneSignalAppKey"
-
+	ctx.ReadJSON(&pushmsg)
 
 	Db.Close()
 }
