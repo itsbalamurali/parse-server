@@ -5,6 +5,7 @@ import (
 	"github.com/itsbalamurali/parse-server/models"
 	"github.com/kataras/iris"
 	"io/ioutil"
+	"bytes"
 )
 
 type FileAPI struct {
@@ -27,7 +28,7 @@ func (f *FileAPI) Upload(ctx *iris.Context) {
 		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "InvalidContentLength", Code: 128})
 	}
 
-	if ctx.Request.Header.ContentLength() == nil {
+	if ctx.Request.Header.ContentLength() == 0 {
 		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "MissingContentLength", Code: 128})
 	}
 
@@ -37,13 +38,15 @@ func (f *FileAPI) Upload(ctx *iris.Context) {
 
 	filename := ctx.Param("name")
 
-	content, err := ioutil.ReadAll(ctx.PostBody())
+	content, err := ioutil.ReadAll(bytes.NewReader(ctx.PostBody()))
 
 	if err != nil {
 		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "FileSaveError", Code: 130})
 	}
 
-	err = f.bucket.Put(filename, content, ctx.Request.Header.ContentType(), s3.PublicRead)
+	ctype := string(ctx.Request.Header.ContentType()[:])
+
+	err = f.bucket.Put(filename, content, ctype, s3.PublicRead, s3.Options{})
 
 	if err != nil {
 		ctx.JSON(iris.StatusBadRequest, models.Error{Message: "FileSaveError", Code: 130})
@@ -57,5 +60,5 @@ func (f *FileAPI) Upload(ctx *iris.Context) {
 func (f *FileAPI) Delete(ctx *iris.Context) {
 	filename := ctx.Param("name")
 	f.bucket.Del(filename)
-	ctx.Response.Header.StatusCode(204)
+	ctx.Response.Header.SetStatusCode(204)
 }
