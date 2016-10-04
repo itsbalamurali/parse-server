@@ -1,6 +1,9 @@
 package database
 
-import "gopkg.in/mgo.v2"
+import (
+	"gopkg.in/mgo.v2"
+	"github.com/kataras/iris"
+)
 
 var (
 	Host         = "mongodb://ds021346.mlab.com:21346/"
@@ -30,10 +33,9 @@ func init() {
 		mainSession, err = mgo.Dial(Host)
 
 		if err != nil {
+			iris.Logger.Fatal("Could not connect to MongoDB: ", err)
 			panic(err)
 		}
-		//defer mainSession.Close() //Extra add
-
 
 		mainSession.SetMode(mgo.Monotonic, true)
 		mainDb = mainSession.DB(Database)
