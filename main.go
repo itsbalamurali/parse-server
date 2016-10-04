@@ -62,7 +62,7 @@ func main() {
 	})
 
 	//API Version 1
-	v1 := iris.Party("/1", crs)
+	v1 := iris.Party("/1")
 
 	//V1 Routes
 	//Classes
@@ -175,4 +175,12 @@ func main() {
 
 	//Listen on port specified
 	iris.Listen(":" + port)
+	host , err := os.Hostname()
+
+	if err != nil {
+		iris.Logger.Println("Cant determine Hostname")
+		host = "localhost"
+	}
+
+	iris.Logger.Println("xParse is running on: http://"+host+":"+port)
 }
