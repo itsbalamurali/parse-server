@@ -24,8 +24,6 @@ deploy:
   skip_cleanup: true
   overwrite: true
   provider: releases
-  api_key:
-    secure: vvWdY/pZuE14m71HjCefFqrOStFjt4cB2sGIBHmkJsnNkCVa1qDKMIvZVAq813hbo3iwa5bXBM8pfltmk+6L438h0MQM1k+Awv4oVfvq4U3Z+360wZ+N4EGtTME4KUhzeKxNUk4DVlF6aGmhUoV3USZ4haovLvgSF6Gq6+Lw77pQguZUc32SEMk3j31h6ntKOEy9TSMW9DB11nDE+ZfLJZ2OphJ8nQy12KDB0rt3MlR4gzrB0Fw9YrWLKp7fc/sSPTqbVItNhoC15iE3YM/2kTvkiUUtKc1kPawhltL/iksvAJ/PHIh0fHEZR1dnG8U7mFE01Is18zA/45OCOvTMLd+2p03gsxSph1HPFZVhXb4r6asJypoQ6u8MZNo8+QxF2GLTdDLXHHAszMDJNIlfkHg93zpOPefMJzEp/VzG/u5adRUe/ztU/r+GRinFIEIdaNiI96M0YYJFWAWwPhjAfWLqgR/YmF4sIsyXJy9VPDgeqIAdqSkbJRZIPnsxfY6y5JrLYGb30Y7ldLd9KVNc8euU7N5fpqjoxHWrIeaxF3gU+75c8I74ACeU6SjxZnWpals8yPSRgzdcD6mSP2eAPXQovHPrTnVl4fganK96wnMFIHb6bL7v/5T2D4HukAeVlv5ZIRUV00BXTnZ5VNQPPBUZkDfmqMZFkGOVe7p9wKI=
   file:
     - xparse_linux_amd64
     - xparse_linux_386
